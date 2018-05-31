@@ -1,7 +1,5 @@
 package iv1350.saleprocess.model;
 
-import java.text.DecimalFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,8 @@ public class Sale {
 	private double runningTotal;
 	private double runningTotalIncTax;
 	private final double TAX = 1.1;
+	private List<SaleObserver> saleObservers = new ArrayList<>();
+	RevenueKeeper revenueKeeper = new RevenueKeeper();
 	
 	/**
 	 * Creates a new instance, records the time that the sale took place. 
@@ -54,6 +54,31 @@ public class Sale {
 	public double calculateRunningTotalIncTax() {
 		runningTotalIncTax = runningTotal * TAX;
 		return runningTotalIncTax;
+	}
+	
+    /**
+     * The specified observer will be notified when a sale has ended.
+     * @param observer The observer to notify.
+     */
+	public void addSaleObserver(SaleObserver observer) {
+		saleObservers.add(observer);
+	}
+
+	/**
+	 * Method nextSaleRevenue will call method notifyObserver.
+	 */
+	public void showNextSaleRevenue() {
+	    notifyObservers();
+	}
+	
+	/**
+	 * Method notifyObservers will go thru all observers in the list and send
+	 * them the current revenue value.
+	 */
+	private void notifyObservers() {
+		 for (SaleObserver saleObserver : saleObservers) {
+			 saleObserver.saleRevenueChanged(revenueKeeper.getRevenue());
+	     }
 	}
 }
 

@@ -10,11 +10,7 @@ public class SaleDTO {
 	private ItemDTO item;
 	private double priceExTax;
 	List<ItemDTO> shoppingCart;
-	
-	private List<SaleObserver> saleObservers = new ArrayList<>();
 	private double runningTotalIncTax;
-	private double currentTotalIncTax;
-	RevenueKeeper revenueKeeper = new RevenueKeeper();
 	
 	/**
 	 * The SaleDTO creates a DTO of the sale.
@@ -59,30 +55,5 @@ public class SaleDTO {
 	
 	public double getPriceIncTax() {
 		return this.runningTotalIncTax;
-	}
-	
-    /**
-     * The specified observer will be notified when a sale has ended.
-     * @param observer The observer to notify.
-     */
-	public void addSaleObserver(SaleObserver observer) {
-		saleObservers.add(observer);
-	}
-	
-    /**
-     * Method nextSaleRevenue will call method notifyObserver.
-     */
-    public void nextSaleRevenue() {
-        notifyObservers();
-    }
-    
-    /**
-     * Method notifyObservers will go thru all observers in the list and send
-     * them the current revenue value.
-     */
-	private void notifyObservers() {
-		 for (SaleObserver saleObserver : saleObservers) {
-			 saleObserver.saleRevenueChanged(revenueKeeper.getRevenue());
-	     }
 	}
 }

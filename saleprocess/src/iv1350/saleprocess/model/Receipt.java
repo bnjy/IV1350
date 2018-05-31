@@ -1,13 +1,9 @@
 package iv1350.saleprocess.model;
 
-import iv1350.saleprocess.dbhandler.ItemDTO;
-
 /**
  * Represents the receipt of a sale.
  */
 public class Receipt {
-	private SaleDTO activeSaleDTO;
-	private EndSale endSale;
 	
 	public Receipt() {
 	}

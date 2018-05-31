@@ -1,8 +1,5 @@
 package iv1350.saleprocess.model;
 
-import java.util.*;
-import iv1350.saleprocess.dbhandler.ItemDTO;
-
 /**
  * Represents the end session of an sale.
  */

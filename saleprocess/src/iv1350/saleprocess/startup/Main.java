@@ -15,7 +15,6 @@ public class Main {
 		ItemInventory inventory = new ItemInventory();
 		Controller contr = new Controller(inventory);
 		View view = new View (contr);
-		AccountingSystem accountingSystem = new AccountingSystem();
 		
 		view.sampleExecution();
 	}

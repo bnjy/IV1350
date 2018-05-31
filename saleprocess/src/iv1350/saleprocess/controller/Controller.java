@@ -1,8 +1,5 @@
 package iv1350.saleprocess.controller;
 
-import java.util.*;
-import java.lang.Exception;
-
 import iv1350.saleprocess.model.EndSale;
 import iv1350.saleprocess.model.ItemIdentifierException;
 import iv1350.saleprocess.model.Receipt;
@@ -11,6 +8,7 @@ import iv1350.saleprocess.model.Sale;
 import iv1350.saleprocess.model.SaleDTO;
 import iv1350.saleprocess.model.SaleObserver;
 import iv1350.saleprocess.dbhandler.AccountingSystem;
+import iv1350.saleprocess.dbhandler.DatabaseFailException;
 import iv1350.saleprocess.dbhandler.ItemDTO;
 import iv1350.saleprocess.dbhandler.ItemInventory;
 import iv1350.saleprocess.dbhandler.Printer;
@@ -43,8 +41,13 @@ public class Controller {
 	 * @return activeSaleDTO the gathered information about the sale.
 	 * @throws ItemIdentifierException
 	 */
-	public SaleDTO scanItem(String itemId) throws ItemIdentifierException {
+	public SaleDTO scanItem(String itemId) throws OperationFailedException, ItemIdentifierException {
+		try {
 		currentItem = inventory.searchItem(itemId);
+		}
+		catch(DatabaseFailException databaseFailExc) {
+			throw new OperationFailedException(databaseFailExc);
+		}
 		return activeSaleDTO = sale.addItem(currentItem);
 	}
 	/**
@@ -104,7 +107,7 @@ public class Controller {
      * @param observer The observer to notify.
      */
 	public void addSaleObserver(SaleObserver observer) {
-		activeSaleDTO.addSaleObserver(observer);
+		sale.addSaleObserver(observer);
 	}
 	
     /**
@@ -112,7 +115,7 @@ public class Controller {
      * the updated revenue on the display.
      */
     public void showNextRevenue() {
-    	activeSaleDTO.nextSaleRevenue();
+    	sale.showNextSaleRevenue();
     }
     
     /**
@@ -120,6 +123,6 @@ public class Controller {
      * in class {@link RevenueKeeper}.
      */
 	public void addRevenue() {
-		revenueKeeper.addRevenue(activeSaleDTO.getPriceIncTax());
+		revenueKeeper.addRevenue(sale.calculateRunningTotalIncTax());
 	}
 }

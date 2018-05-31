@@ -6,7 +6,7 @@ public interface SaleObserver {
     /**
      * Called when the sale is ended and has been paid.
      *
-     * @param currentTotalIncTax is the current sales total inc tax.
+     * @param currentRevenue is the current sales total inc tax.
      */
-    void saleRevenueChanged(double currentTotalIncTax);
+    void saleRevenueChanged(double currentRevenue);
 }

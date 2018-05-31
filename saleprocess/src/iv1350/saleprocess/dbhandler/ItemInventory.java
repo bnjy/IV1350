@@ -2,8 +2,8 @@ package iv1350.saleprocess.dbhandler;
 
 import java.util.*;
 
+import iv1350.saleprocess.controller.OperationFailedException;
 import iv1350.saleprocess.model.ItemIdentifierException;
-import iv1350.saleprocess.model.Sale;
 /**
  * This is the item inventory for the saleprocess. All items are created here.
  */
@@ -29,20 +29,19 @@ public class ItemInventory {
 	 * @param itemId The searched articles identification number.
 	 * @return item The returned item if it is available.
 	 * @throws ItemIdentifierException
+	 * @throws OperationFailedException 
 	 */
-	public ItemDTO searchItem(String itemId) throws ItemIdentifierException  {
+	public ItemDTO searchItem(String itemId) throws ItemIdentifierException, OperationFailedException  {
 		ItemDTO item = null;
 		
-		for(ItemDTO itemInList : itemInventoryList) {
-			if(itemInList.getItemId().equals(itemId)) {
-				item = itemInList;
-			}
+		if(itemId == "004") {
+			throw new DatabaseFailException("Failed to establish connection with database.");
 		}
-		
-		try {
-			databaseExceptionHandler(itemId);
-		} catch(DatabaseFailException e){
-			e.printStackTrace();
+			
+		for(ItemDTO itemInList : itemInventoryList) {
+				if(itemInList.getItemId().equals(itemId)) {
+					item = itemInList;
+				}
 		}
 		
 		if(item == null) {
@@ -50,17 +49,6 @@ public class ItemInventory {
 		}
 		
 		return item;
-	}
-	
-	/** The void method databaseExceptionHandler throws a {@link DatabaseFailException} object
-	 * if the itemId equals "004".
-	 * @param itemId The searched articles identification number.
-	 * @throws DatabaseFailException if the itemId equals "004".
-	 **/
-	private void databaseExceptionHandler(String itemId) throws DatabaseFailException {
-		if(itemId == "004") {
-			throw new DatabaseFailException(itemId);
-		}
 	}
 	
     /** The void method updateItemInventorySystem returns a "fake" call that the inventory system
